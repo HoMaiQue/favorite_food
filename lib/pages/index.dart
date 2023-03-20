@@ -1,6 +1,6 @@
 import 'package:favotire_food/config/const.dart';
 import 'package:favotire_food/pages/favorite/favorite_body.dart';
-import 'package:favotire_food/pages/home/home_body.dart';
+import 'package:favotire_food/pages/home/widget/category.dart';
 import 'package:favotire_food/pages/seen/seen_body.dart';
 import 'package:flutter/material.dart';
 
@@ -15,7 +15,7 @@ class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    HomeBody(),
+    Category(),
     FavoriteBody(),
     SeenBody()
   ];
