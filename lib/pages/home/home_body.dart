@@ -1,7 +1,9 @@
 import 'package:favotire_food/config/const.dart';
+import 'package:favotire_food/pages/home/widget/category.dart';
 import 'package:flutter/material.dart';
 
 class HomeBody extends StatelessWidget {
+  static const routeName = "/";
   const HomeBody({super.key});
 
   @override
@@ -16,28 +18,41 @@ class HomeBody extends StatelessWidget {
         ),
         itemCount: 4,
         itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: [
-              Expanded(
-                  flex: 2,
-                  child: Container(
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: Colors.amber,
-                      borderRadius: BorderRadius.circular(10),
-                      image: const DecorationImage(
-                        image: NetworkImage("http://placeimg.com/640/480/city"),
-                        fit: BoxFit.cover,
+          return InkWell(
+            onTap: () {
+              // Navigator.of(context).push(
+              //     MaterialPageRoute(builder: ((context) => const Category())));
+
+              // Navigator.push(context,
+              //     MaterialPageRoute(builder: ((context) => const Category())));
+
+              Navigator.pushNamed(context, Category.routeName,
+                  arguments: {"title": index});
+            },
+            child: Column(
+              children: [
+                Expanded(
+                    flex: 2,
+                    child: Container(
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.amber,
+                        borderRadius: BorderRadius.circular(10),
+                        image: const DecorationImage(
+                          image:
+                              NetworkImage("http://placeimg.com/640/480/city"),
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                  )),
-              const Expanded(
-                flex: 1,
-                child: Center(
-                    child: Text("Principal Tactics Developer",
-                        style: styleTitle, textAlign: TextAlign.center)),
-              ),
-            ],
+                    )),
+                const Expanded(
+                  flex: 1,
+                  child: Center(
+                      child: Text("Principal Tactics Developer",
+                          style: styleTitle, textAlign: TextAlign.center)),
+                ),
+              ],
+            ),
           );
         },
       ),
