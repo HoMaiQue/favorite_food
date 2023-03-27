@@ -16,7 +16,7 @@ class CategoryProvider extends ChangeNotifier {
     List<Category> dataList = List<Category>.from(
         parseList.map((data) => Category.fromJson(jsonEncode(data))));
     _list = dataList;
-    notifyListeners();
+    // notifyListeners();
     return dataList;
   }
 }

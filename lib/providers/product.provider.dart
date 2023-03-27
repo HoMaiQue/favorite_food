@@ -5,18 +5,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 class ProductProvider extends ChangeNotifier {
-  List<Product> _productList = [];
+  List<ProductModel> _productList = [];
 
-  List<Product> get productList => [..._productList];
+  List<ProductModel> get productList => [..._productList];
+  List<ProductModel> getProductByCategoryId(categoryId) {
+    return _productList
+        .where((product) => product.categoryId == categoryId)
+        .toList();
+  }
 
-  Future<List<Product>> readJson() async {
+  ProductModel getProductById(id) {
+    return _productList.singleWhere((product) => product.id == id);
+  }
+
+  Future<List<ProductModel>> readJson() async {
     final String response =
-        await rootBundle.loadString("assets/json/category.json");
+        await rootBundle.loadString("assets/json/product.json");
     final parseList = await json.decode(response);
-    List<Product> dataList = List<Product>.from(
-        parseList.map((data) => Product.fromJson(jsonEncode(data))));
+    List<ProductModel> dataList = List<ProductModel>.from(
+        parseList.map((data) => ProductModel.fromJson(jsonEncode(data))));
     _productList = dataList;
-    notifyListeners();
+    // notifyListeners();
     return dataList;
   }
 }

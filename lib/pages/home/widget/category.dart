@@ -1,5 +1,11 @@
 import 'package:favotire_food/config/const.dart';
+import 'package:favotire_food/model/product.model.dart';
+
+import 'package:favotire_food/pages/home/widget/category_body.dart';
+import 'package:favotire_food/pages/home/widget/product.dart';
+import 'package:favotire_food/providers/product.provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class Category extends StatelessWidget {
   static const routeName = "/category";
@@ -7,17 +13,19 @@ class Category extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final params = (ModalRoute.of(context)?.settings.arguments ??
+    final data = (ModalRoute.of(context)?.settings.arguments ??
         <String, dynamic>{}) as Map;
-    print(params["title"]);
+    final dataByCategoryId = Provider.of<ProductProvider>(context)
+        .getProductByCategoryId(data["categoryId"]);
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Category screen"),
+        backgroundColor: dMainColor,
+        title: Text(data["title"]),
         centerTitle: true,
       ),
       body: ListView.separated(
         padding: const EdgeInsets.all(10),
-        itemCount: 10,
+        itemCount: dataByCategoryId.length,
         separatorBuilder: (BuildContext context, int index) {
           return const SizedBox(height: 20);
         },
@@ -25,54 +33,11 @@ class Category extends StatelessWidget {
           return InkWell(
             onTap: () {
               // Navigator.of(context).pop();
-              Navigator.pop(context);
+              Navigator.pushNamed(context, Product.routeName,
+                  arguments: {"id": dataByCategoryId[index].id});
             },
-            child: Container(
-              width: double.infinity,
-              height: 220,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: GridTile(
-                footer: const GridTileBar(
-                  backgroundColor: dFooterColor,
-                  title: Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: Text(
-                        "Human Intranet Planner",
-                        style: styleTitle,
-                      ),
-                    ),
-                  ),
-                  subtitle: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(Icons.favorite),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("123"),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Icon(Icons.timelapse_sharp),
-                      SizedBox(
-                        width: 10,
-                      ),
-                      Text("123"),
-                    ],
-                  ),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12),
-                  child: const Image(
-                    image: NetworkImage('http://placeimg.com/640/480'),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-            ),
+            child: ChangeNotifierProvider<ProductModel>.value(
+                value: dataByCategoryId[index], child: const CategoryBody()),
           );
         },
       ),
