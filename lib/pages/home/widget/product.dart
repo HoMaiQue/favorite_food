@@ -3,12 +3,18 @@ import 'package:favotire_food/providers/product.provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Product extends StatelessWidget {
+class Product extends StatefulWidget {
   static const routeName = "/product";
   const Product({super.key});
 
   @override
+  State<Product> createState() => _ProductState();
+}
+
+class _ProductState extends State<Product> {
+  @override
   Widget build(BuildContext context) {
+    bool change = true;
     final argument = ModalRoute.of(context)?.settings.arguments as Map;
     final product =
         Provider.of<ProductProvider>(context).getProductById(argument["id"]);
@@ -48,7 +54,20 @@ class Product extends StatelessWidget {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Icon(Icons.favorite, color: Colors.grey),
+                            GestureDetector(
+                              onTap: () {
+                                product.toggleIsFavorite();
+                                setState(() {
+                                  change = !change;
+                                });
+                              },
+                              child: Icon(
+                                Icons.favorite,
+                                color: product.isFavorite
+                                    ? Colors.red
+                                    : dButtonColorInactive,
+                              ),
+                            ),
                             const SizedBox(
                               width: 10,
                             ),

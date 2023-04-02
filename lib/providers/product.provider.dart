@@ -13,6 +13,9 @@ class ProductProvider extends ChangeNotifier {
         .where((product) => product.categoryId == categoryId)
         .toList();
   }
+  List<ProductModel> getFavoriteProduct(){
+    return _productList.where((product) => product.isFavorite).toList();
+  }
 
   ProductModel getProductById(id) {
     return _productList.singleWhere((product) => product.id == id);

@@ -15,6 +15,14 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
+  late Future _dataFuture;
+
+  @override
+  void didChangeDependencies() {
+    // TODO: implement didChangeDependencies
+    super.didChangeDependencies();
+    _dataFuture = Provider.of<ProductProvider>(context).readJson();
+  }
 
   static const List<Widget> _widgetOptions = <Widget>[
     HomeBody(),
@@ -31,7 +39,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-        future: Provider.of<ProductProvider>(context).readJson(),
+        future: _dataFuture,
         builder: (BuildContext context, snapshot) {
           return Scaffold(
               appBar: AppBar(
